@@ -29,8 +29,8 @@ $$F(x) = \begin{cases}
 e cuja inversa será
 
 $$F^{-1}(u) = \begin{cases}
-    a+\sqrt{u(c-a)(b-a)} &\text{se }0\lt u \lt F(c)\\
-    b-\sqrt{(1-u)(b-a)(b-c)} &\text{se } F(c)\le u\lt 1
+    a+\sqrt{u(c-a)(b-a)} &\text{se }0\le u \lt F(c)\\
+    b-\sqrt{(1-u)(b-a)(b-c)} &\text{se } F(c)\le u\le 1
     \end{cases}$$
 
 [top](#exemplos-de-simulacao)
