@@ -1,6 +1,10 @@
-# Simulacao - Monte Carlo - Transformacao Inversa
+# Exemplos de Simulacao
 
-Programa Python de simulação via método de Monte Carlo usando transformações inversas.
+Programa Python com exemplos de simulação diversas.
+
+## Função Binomial
+
+TBA
 
 ## Funcao Triangular
 
@@ -29,4 +33,4 @@ $F^{-1}(u) = \begin{cases}
     b-\sqrt{(1-u)(b-a)(b-c)} &\text{se } F(c)\le u\lt 1
     \end{cases}$
 
-[top](#simulacao---monte-carlo---transformacao-inversa)
+[top](#exemplos-de-simulacao)
