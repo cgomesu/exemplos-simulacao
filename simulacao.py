@@ -31,16 +31,13 @@ class Simulacao(ABC):
         self.__x = x
 
     @abstractmethod
-    def gerar_aleatorio(self):
-        pass
-    
-    @abstractmethod
     def simulacao(self):
         pass
 
-    @abstractmethod
-    def histograma(self):
-        pass
+    def histograma(self, bins="auto"):
+        # metodo bagual
+        plt.hist(self.x, bins=bins)
+        plt.show()
 
 class Binomial(Simulacao):
     def __init__(self, observacoes:int, seed:int, n:int, theta:float):
@@ -61,21 +58,13 @@ class Binomial(Simulacao):
     def theta(self, theta:float):
         self.__theta = theta
 
-    def gerar_aleatorio(self):
+    def simulacao(self):
         np.random.seed(self.seed)
         for i in range(len(self.x)):
             uniform = np.random.uniform(low=0, high=1, size=self.n)
             # soma elementos de uma array booleana condicao etapa 2
             self.x[i] = (uniform <= self.theta).sum()
 
-    def histograma(self, bins="auto"):
-        # metodo bagual
-        plt.hist(self.x, bins=bins)
-        plt.show()
-
-    # TODO
-    def simulacao(self, metodo="inversa"):
-        pass
 
 class Triangular(Simulacao):
     def __init__(self, observacoes:int, seed:int, a:float, b:float, c:float):
@@ -118,19 +107,22 @@ class Triangular(Simulacao):
     def __inv_cdf(self, valor:float):
         if valor == 0:
             return self.a
-        elif 0 < valor < self.__cdf(valor):
+        elif 0 < valor < self.__cdf(self.c):
             return self.a + math.sqrt(valor*(self.c-self.a)*(self.b-self.a))
-        elif self.__cdf(valor) <= valor < 1:
-            return self.b + math.sqrt((1-valor)*(self.b-self.a)*(self.b-self.c))
+        elif self.__cdf(self.c) <= valor < 1:
+            return self.b - math.sqrt((1-valor)*(self.b-self.a)*(self.b-self.c))
         elif valor == 1:
             return self.b
         else:
             raise ValueError(f"O valor '{valor}' não está no intervalo de probabilidade.")
     
-    # TODO
-    def gerar_aleatorio(self):
-        pass
-    def histograma(self):
-        pass
-    def simulacao(self):
-        pass
+    def simulacao(self, metodo="inversa"):
+        if metodo == "inversa":
+            return self.__simulacao_inversa()
+        raise ValueError(f"O método {metodo} é inválido.")
+    
+    def __simulacao_inversa(self):
+        np.random.seed(self.seed)
+        uniform = np.random.uniform(low=0, high=1, size=self.observacoes)
+        inv_tri = np.vectorize(self.__inv_cdf)
+        self.x = inv_tri(uniform)
